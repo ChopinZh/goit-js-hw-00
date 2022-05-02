@@ -1,50 +1,80 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-let modalWindow;
-const galleryItemsContainer = document.querySelector(".gallery");
-const galleryItemsMarkup = createGalleryItemsMarkup(galleryItems);
-galleryItemsContainer.insertAdjacentHTML("beforeend", galleryItemsMarkup);
 
-galleryItemsContainer.addEventListener('click', onClickGalleryItems)
+const galleryItemsContainer = document.querySelector('.gallery');
+const galleryItemsMarkup = createGalleryItemCardMarkup(galleryItems);
 
-function createGalleryItemsMarkup(items) {
+galleryItemsContainer.insertAdjacentHTML('afterbegin', galleryItemsMarkup);
+galleryItemsContainer.addEventListener('click', onGalleryItemsContainerClick);
+
+function createGalleryItemCardMarkup(galleryItems) {
+
     return galleryItems.map(({ preview, original, description }) => {
         return `<div class="gallery__item">
-<a class="gallery__link" href="${original}">
+  <a class="gallery__link" href="${original}">
     <img
-    class="gallery__image"
-    src="${preview}"
-    data-source="${original}"
-    alt="${description}"
+      class="gallery__image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
     />
-</a>
-</div>`
-    }).join("");
+  </a>
+</div>`;
+    }).join('');
 }
+//проверка куда кликнули
+function onGalleryItemsContainerClick(evt) {
+  evt.preventDefault();
+    
+  if (evt.target.nodeName !== "IMG") {
+    return;
+  }
+  const originalUrl = evt.target.dataset.source;
+  
 
-function onClickGalleryItems(event) {
-    event.preventDefault();
-    const galleryImageEl = event.target.classList.contains("gallery__image");
-    if (!galleryImageEl) {
-        return;
+
+  //   const instance = basicLightbox.create(`<img src=${originalUrl}>`)
+  // instance.show();
+
+  //    const instance = basicLightbox.create(`<img src=${originalUrl}>`, {
+  //       onShow: (instance) => { document.addEventListener('onShow', instance) },
+  //      onClose: (instance) => { document.removeEventListener('onClose', instance); console.log('blup') }
+  //    })
+  
+  
+  //   instance.show();
+  // // console.log(evt.target)
+
+  //   //закрытие по ESC
+  //   document.addEventListener('keydown', function(event){
+  //     if (basicLightbox.visible() && event.key === "Escape") {
+  //       instance.close((instance) => { document.removeEventListener('keydown', instance); console.log('bla') });
+  //       // onClose: (instance) => { document.removeEventListener('keydown', instance) }
+  //       // console.log('bla' + evt.target);
+  //   //  document.removeEventListener('keydown', function(){console.log( 'hi')})
+  //     }
+    
+  //   });
+  
+
+  const options = {
+    onShow: () => {
+      window.addEventListener('keydown', onCloseEsc);
+    },
+    onClose: () => {
+      window.removeEventListener('keydown', onCloseEsc);
+    },
+
+
+  };
+
+  const instance = basicLightbox.create(`<img src=${originalUrl}>`, options);
+        instance.show();
+  function onCloseEsc(event) {
+          
+    if (basicLightbox.visible() && event.key === "Escape") {
+      instance.close();
+      console.log('kizf')
     }
-    const urlSource = event.target.dataset.source;
-    if (urlSource) {
-        modalWindow = basicLightbox.create(`
-   
-<img src="${urlSource}"/>
-`, {
-            onShow: () => galleryItemsContainer.addEventListener("keydown", onEscClose),
-            onClose: () => galleryItemsContainer.removeEventListener("keydown", onEscClose),
-        });
-        modalWindow.show();
-   }
-   
+  }
 }
- function onEscClose(e) {
-        if (e.code == "Escape") 
-            modalWindow.close();
-        
-    }
-
-console.log(galleryItems);
