@@ -31,32 +31,6 @@ function onGalleryItemsContainerClick(evt) {
   }
   const originalUrl = evt.target.dataset.source;
   
-
-
-  //   const instance = basicLightbox.create(`<img src=${originalUrl}>`)
-  // instance.show();
-
-  //    const instance = basicLightbox.create(`<img src=${originalUrl}>`, {
-  //       onShow: (instance) => { document.addEventListener('onShow', instance) },
-  //      onClose: (instance) => { document.removeEventListener('onClose', instance); console.log('blup') }
-  //    })
-  
-  
-  //   instance.show();
-  // // console.log(evt.target)
-
-  //   //закрытие по ESC
-  //   document.addEventListener('keydown', function(event){
-  //     if (basicLightbox.visible() && event.key === "Escape") {
-  //       instance.close((instance) => { document.removeEventListener('keydown', instance); console.log('bla') });
-  //       // onClose: (instance) => { document.removeEventListener('keydown', instance) }
-  //       // console.log('bla' + evt.target);
-  //   //  document.removeEventListener('keydown', function(){console.log( 'hi')})
-  //     }
-    
-  //   });
-  
-
   const options = {
     onShow: () => {
       window.addEventListener('keydown', onCloseEsc);

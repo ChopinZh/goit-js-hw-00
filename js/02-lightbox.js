@@ -19,7 +19,7 @@ function createGalleryItemCardMarkup(galleryItems) {
     }).join('');
 }
 
-//проверка куда кликнули
+//click place check
 function onGalleryItemsContainerClick(evt) {
     evt.preventDefault();
     
